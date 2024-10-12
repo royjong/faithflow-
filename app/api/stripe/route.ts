@@ -4,7 +4,7 @@ import prisma from '@/lib/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2024-09-30.acacia',
 });
 
 export async function POST(request: Request) {
