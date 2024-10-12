@@ -13,8 +13,7 @@ const Header = () => {
 
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-    // Assuming we have a way to check if the user is premium
-    const isPremium = user?.isPremium; // You'll need to implement this based on your user data structure
+  
 
     return (
         <header className="w-full bg-transparent">
@@ -61,27 +60,12 @@ const Header = () => {
                                     )}
                                     <span className="text-sm font-medium text-gray-700">Welkom, {user.given_name}</span>
                                 </div>
-                                {isPremium ? (
-                                    <div className="flex items-center bg-yellow-400 text-yellow-800 px-3 py-1 rounded-full">
-                                        <Award className="w-4 h-4 mr-1" />
-                                        <span className="text-sm font-semibold">Premium</span>
-                                    </div>
-                                ) : (
-                                    <Button 
-                                        variant="outline" 
-                                        className="border-[#60c4ff] text-[#60c4ff] hover:bg-[#60c4ff] hover:text-white transition-colors duration-300"
-                                    >
-                                        <Link href="/api/auth/logout">
-                                            <LogOut className="w-4 h-4 mr-2" />
-                                            Uitloggen
-                                        </Link>
-                                    </Button>
-                                )}
+                               
                             </div>
                         )}
                     </div>
                 </div>
-            </nav>
+            </nav>s
         </header>
     );
 }
