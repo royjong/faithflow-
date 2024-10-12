@@ -8,15 +8,16 @@ import { Button } from "@/components/ui/button";
 import { getDynamicIcon } from "@/utils/iconUtils";
 import { PremiumUpgradeModal } from '../components/upgradeModal';
 import { ThankYouModal } from '../components/ThankYouModal';
-import { ArrowRight, Lock, Sparkles, Search } from 'lucide-react';
+import { ArrowRight, Lock, Sparkles } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
 const Confetti = dynamic(() => import('react-confetti'), { ssr: false });
 
+// Update the Category type to allow 'description' to be 'string | null'
 interface Category {
   id: string;
   name: string;
-  description: string;
+  description: string | null;  // Update: Allow null for description
   imageUrl: string;
   iconName: string;
 }
@@ -40,7 +41,6 @@ const DashboardClient: React.FC<DashboardClientProps> = ({ initialCategories, is
     if (paid === 'true') {
       setShowConfetti(true);
       setShowThankYouModal(true);
-      // Remove the 'paid' parameter from the URL
       window.history.replaceState({}, '', '/dashboard');
     }
   }, [searchParams]);
@@ -57,7 +57,7 @@ const DashboardClient: React.FC<DashboardClientProps> = ({ initialCategories, is
   useEffect(() => {
     const filtered = categories.filter((category) =>
       category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchTerm.toLowerCase())
+      (category.description && category.description.toLowerCase().includes(searchTerm.toLowerCase())) // Handle null description
     );
     setFilteredCategories(filtered);
   }, [searchTerm, categories]);
@@ -72,7 +72,6 @@ const DashboardClient: React.FC<DashboardClientProps> = ({ initialCategories, is
       {showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
       <ThankYouModal isOpen={showThankYouModal} onClose={handleCloseThankYouModal} />
 
-     
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredCategories.map((category, index) => {
           const Icon = getDynamicIcon(category.iconName) as React.FC<{ className?: string }>;
@@ -100,7 +99,9 @@ const DashboardClient: React.FC<DashboardClientProps> = ({ initialCategories, is
                     <Icon className="h-10 w-10 text-white" />
                   </div>
                   <h3 className="text-3xl font-bold text-white mb-3">{category.name}</h3>
-                  <p className="text-blue-100 text-lg mb-6">{category.description}</p>
+                  <p className="text-blue-100 text-lg mb-6">
+                    {category.description ? category.description : 'Geen beschrijving beschikbaar'} {/* Handle null description */}
+                  </p>
                 </div>
                 {isLocked ? (
                   <div className="flex items-center justify-between">

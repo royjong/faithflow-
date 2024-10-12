@@ -1,15 +1,14 @@
 "use client";
-
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchTerm = e.target.value;
     setSearchTerm(newSearchTerm);
-    
+
     // Dispatch a custom event with the new search term
     const searchEvent = new CustomEvent('searchChange', { detail: newSearchTerm });
     window.dispatchEvent(searchEvent);
